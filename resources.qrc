@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/">
+        <file>fragment.frag</file>
+        <file>vertex.vert</file>
+        <file>ship2.png</file>
+        <file>circle.vert</file>
+        <file>circle.frag</file>
+    </qresource>
+    <qresource prefix="/images">
+        <file>all_sails.png</file>
+        <file>foreandaft_sails.png</file>
+        <file>main_sails.png</file>
+        <file>no_sails.png</file>
+    </qresource>
+</RCC>
