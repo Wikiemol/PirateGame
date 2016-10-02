@@ -14,8 +14,8 @@ int Renderer::screenHalfHeight;
 void Renderer::init()
 {
     texturedRectangleRenderer.init();
-    circleRenderer.init(":/circle.vert", ":/circle.frag");
-    rectRenderer.init(":/vertex.vert", ":/rectangle.frag");
+    circleRenderer.init(":/shaders/circle.vert", ":/shaders/circle.frag");
+    rectRenderer.init(":/shaders/vertex.vert", ":/shaders/rectangle.frag");
     TexturedRectangleProgram::getTexture(":/images/flags/english_flag.png", NULL);
     TexturedRectangleProgram::getTexture(":/images/flags/spanish_flag.png", NULL);
     TexturedRectangleProgram::getTexture(":/images/flags/roger_flag.png", NULL);

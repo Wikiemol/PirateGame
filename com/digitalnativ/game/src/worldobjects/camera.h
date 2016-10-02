@@ -1,6 +1,6 @@
 #ifndef CAMERA_H
 #define CAMERA_H
-#include "vec2.h"
+#include "utils/vec2.h"
 
 
 class Camera

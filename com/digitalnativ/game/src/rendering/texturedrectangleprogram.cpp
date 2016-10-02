@@ -1,5 +1,5 @@
 #include "texturedrectangleprogram.h"
-#include "gameobject.h"
+#include "worldobjects/gameobject.h"
 #include <QOpenGLShader>
 #include <QImage>
 #include <QOpenGLWidget>
@@ -14,15 +14,14 @@ void TexturedRectangleProgram::init() {
 void TexturedRectangleProgram::init(const char *vertexShaderFile, const char *fragmentShaderFile) {
     QOpenGLShader vertexShader(QOpenGLShader::Vertex);
     if (vertexShaderFile == NULL) {
-        vertexShader.compileSourceFile(":/vertex.vert");
+        vertexShader.compileSourceFile(":/shaders/vertex.vert");
     } else {
         vertexShader.compileSourceCode(vertexShaderFile);
     }
 
     QOpenGLShader fragmentShader(QOpenGLShader::Fragment);
     if (fragmentShaderFile == NULL) {
-
-        fragmentShader.compileSourceFile(":/fragment.frag");
+        fragmentShader.compileSourceFile(":/shaders/fragment.frag");
     } else {
         vertexShader.compileSourceCode(fragmentShaderFile);
     }

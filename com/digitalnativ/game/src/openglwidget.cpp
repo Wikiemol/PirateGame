@@ -7,9 +7,9 @@
 #include <QTimer>
 #include <iostream>
 #include <string.h>
-#include "texturedrectangleprogram.h"
+#include "rendering/texturedrectangleprogram.h"
 #include "openglwidget.h"
-#include "renderer.h"
+#include "rendering/renderer.h"
 #include "defaults.h"
 
 OpenGLWidget::OpenGLWidget(QWidget *parent) : QOpenGLWidget(parent)

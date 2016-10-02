@@ -1,6 +1,6 @@
 #ifndef COLLIDABLE_H
 #define COLLIDABLE_H
-#include "gameobject.h"
+#include "worldobjects/gameobject.h"
 
 
 class Collidable

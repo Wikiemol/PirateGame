@@ -7,11 +7,11 @@
 #include <QOpenGLShaderProgram>
 #include <QTimer>
 #include <QKeyEvent>
-#include "texturedrectangleprogram.h"
-#include "gameobject.h"
-#include "rectangleprogram.h"
-#include "ship.h"
-#include "aiship.h"
+#include "rendering/texturedrectangleprogram.h"
+#include "worldobjects/gameobject.h"
+#include "rendering/rectangleprogram.h"
+#include "worldobjects/ship.h"
+#include "worldobjects/aiship.h"
 #include "gameworld.h"
 
 class OpenGLWidget : public QOpenGLWidget, public QOpenGLFunctions

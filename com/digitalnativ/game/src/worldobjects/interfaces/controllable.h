@@ -1,8 +1,7 @@
 #ifndef CONTROLLABLE_H
 #define CONTROLLABLE_H
 #include <QKeyEvent>
-#include "gameobject.h"
-
+#include "worldobjects/gameobject.h"
 
 class Controllable
 {

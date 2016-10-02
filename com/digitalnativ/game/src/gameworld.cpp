@@ -1,5 +1,5 @@
 #include "gameworld.h"
-#include "renderer.h"
+#include "rendering/renderer.h"
 #include "defaults.h"
 #include <QDateTime>
 #include <unordered_set>

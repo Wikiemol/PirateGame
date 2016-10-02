@@ -1,9 +1,9 @@
 #ifndef RENDERER_H
 #define RENDERER_H
-#include "ship.h"
-#include "texturedrectangleprogram.h"
-#include "rectangleprogram.h"
-#include "camera.h"
+#include "worldobjects/ship.h"
+#include "rendering/texturedrectangleprogram.h"
+#include "rendering/rectangleprogram.h"
+#include "worldobjects/camera.h"
 class Renderer
 {
 public:

@@ -1,0 +1,21 @@
+<RCC>
+    <qresource prefix="/">
+        <file>shaders/circle.frag</file>
+        <file>shaders/circle.vert</file>
+        <file>shaders/fragment.frag</file>
+        <file>shaders/rectangle.frag</file>
+        <file>shaders/vertex.vert</file>
+        <file>images/all_sails.png</file>
+        <file>images/foreandaft_sails.png</file>
+        <file>images/main_sails.png</file>
+        <file>images/no_sails.png</file>
+        <file>images/ship2.png</file>
+        <file>images/water_texture.png</file>
+        <file>images/water_texture.jpg</file>
+        <file>images/wind_arrow.png</file>
+        <file>images/flags/english_flag.png</file>
+        <file>images/flags/french_flag.png</file>
+        <file>images/flags/roger_flag.png</file>
+        <file>images/flags/spanish_flag.png</file>
+    </qresource>
+</RCC>

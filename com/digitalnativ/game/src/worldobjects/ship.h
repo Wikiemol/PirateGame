@@ -1,11 +1,11 @@
 #ifndef SHIP_H
 #define SHIP_H
 #include <vector>
-#include "gameobject.h"
-#include "vec2.h"
-#include "collidable.h"
+#include "worldobjects/gameobject.h"
+#include "utils/vec2.h"
+#include "worldobjects/interfaces/collidable.h"
 #include "defaults.h"
-#include "controllable.h"
+#include "worldobjects/interfaces/controllable.h"
 #include <QKeyEvent>
 class Ship : public GameObject, public Controllable
 {

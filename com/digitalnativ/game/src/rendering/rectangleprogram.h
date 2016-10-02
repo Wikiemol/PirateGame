@@ -1,7 +1,7 @@
 #ifndef RECTANGLEPROGRAM_H
 #define RECTANGLEPROGRAM_H
-#include "gameobject.h"
-#include "openglrenderer.h"
+#include "worldobjects/gameobject.h"
+#include "rendering/openglrenderer.h"
 #include <QOpenGLShaderProgram>
 #include <QColor>
 

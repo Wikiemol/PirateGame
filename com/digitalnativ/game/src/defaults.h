@@ -15,4 +15,6 @@
 #define WORLD_HEIGHT 180000 / 10
 #define CONTROLLABLE_AI_TARGET true
 
+#define SHADERS_DIR "com/digitalnativ/game/shaders/"
+
 #endif // DEFAULTS_H

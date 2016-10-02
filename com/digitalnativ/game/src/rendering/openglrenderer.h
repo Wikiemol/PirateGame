@@ -1,6 +1,6 @@
 #ifndef OPENGLRENDERER_H
 #define OPENGLRENDERER_H
-#include "gameobject.h"
+#include "worldobjects/gameobject.h"
 #include <QOpenGLShaderProgram>
 
 class OpenGLRenderer : public QOpenGLShaderProgram

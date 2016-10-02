@@ -1,4 +1,4 @@
-#include "gameobjectproperty.h"
+#include "worldobjects/gameobjectproperty.h"
 #include "mainwindow.h"
 #include <QApplication>
 #include <QSurfaceFormat>

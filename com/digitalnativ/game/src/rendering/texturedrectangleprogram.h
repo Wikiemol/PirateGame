@@ -2,7 +2,7 @@
 #define TEXTUREDRECTANGLEPROGRAM_H
 #include <QOpenGLShaderProgram>
 #include <unordered_map>
-#include "gameobject.h"
+#include "worldobjects/gameobject.h"
 #include "openglrenderer.h"
 
 

@@ -1,6 +1,6 @@
 #ifndef TEXTUREDRECTANGLE_H
 #define TEXTUREDRECTANGLE_H
-#include "vec2.h"
+#include "utils/vec2.h"
 #include "defaults.h"
 
 class GameObject
