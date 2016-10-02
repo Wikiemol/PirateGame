@@ -17,6 +17,7 @@ public:
     ~MainWindow();
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
+    void mousePressEvent(QMouseEvent *event);
 private:
     OpenGLWidget *widget;
 

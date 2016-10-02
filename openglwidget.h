@@ -8,7 +8,7 @@
 #include <QTimer>
 #include <QKeyEvent>
 #include "texturedrectangleprogram.h"
-#include "boundingbox.h"
+#include "gameobject.h"
 #include "rectangleprogram.h"
 #include "ship.h"
 #include "aiship.h"
@@ -21,10 +21,12 @@ class OpenGLWidget : public QOpenGLWidget, public QOpenGLFunctions
 public:
 
     OpenGLWidget(QWidget *parent = 0);
+    ~OpenGLWidget();
     void initializeGL();
     void resizeGL(int w, int h);
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
+    void mousePressEvent(QMouseEvent *event);
 public slots:
     void paintGL();
 private:
@@ -33,10 +35,7 @@ private:
     TexturedRectangleProgram texturedRectangleProgram;
     RectangleProgram circleRenderer;
     QTimer gameLoopTimer;
-    Ship ship;
-    AIShip otherShip;
-    BoundingBox box;
-    GameWorld world;
+    GameWorld *world = NULL;
 };
 
 #endif // OPENGLWIDGET_H

@@ -9,113 +9,86 @@
 #include <string.h>
 #include "texturedrectangleprogram.h"
 #include "openglwidget.h"
+#include "renderer.h"
+#include "defaults.h"
 
 OpenGLWidget::OpenGLWidget(QWidget *parent) : QOpenGLWidget(parent)
 {
+}
+
+OpenGLWidget::~OpenGLWidget()
+{
+    GameWorld::destroyInstance();
+    world = NULL;
 }
 
 void OpenGLWidget::initializeGL() {
     initializeOpenGLFunctions();
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
-    glClearColor(0, 0, 0, 1);
+    Renderer::init();
+    glClearColor(0.5, 0.5, 0.5, 1);
     texturedRectangleProgram.init();
     GLuint noSailsTex;
     GLuint allSailsTex;
     GLuint mainSailsTex;
     GLuint foreAndAftSailsTex;
-    texturedRectangleProgram.createTexture(":/images/no_sails.png", &noSailsTex);
-    texturedRectangleProgram.createTexture(":/images/all_sails.png", &allSailsTex);
-    texturedRectangleProgram.createTexture(":/images/main_sails.png", &mainSailsTex);
-    texturedRectangleProgram.createTexture(":/images/foreandaft_sails.png", &foreAndAftSailsTex);
-    ship.setTextures(allSailsTex, mainSailsTex, foreAndAftSailsTex, noSailsTex);
-    otherShip.setTextures(allSailsTex, mainSailsTex, foreAndAftSailsTex, noSailsTex);
-    circleRenderer.init(":/circle.vert", ":/circle.frag");
+    TexturedRectangleProgram::getTexture(":/images/no_sails.png", &noSailsTex);
+    TexturedRectangleProgram::getTexture(":/images/all_sails.png", &allSailsTex);
+    TexturedRectangleProgram::getTexture(":/images/main_sails.png", &mainSailsTex);
+    TexturedRectangleProgram::getTexture(":/images/foreandaft_sails.png", &foreAndAftSailsTex);
 
-    ship.friction = 0.9;
-    ship.setWind(1, M_PI);
-    ship.width = 150;
-    ship.height = 60;
+    Ship *playerShip = new Ship();
+    playerShip->setTextures(allSailsTex, mainSailsTex, foreAndAftSailsTex, noSailsTex);
+    playerShip->width = 300;
+    playerShip->height = 120;
+    playerShip->setIsControllable(true);
 
-    otherShip.setWind(1, M_PI);
-    otherShip.friction = 0.9;
-    otherShip.width = 150;
-    otherShip.height = 60;
+    AIShip *otherShip = new AIShip();
+    otherShip->setTextures(allSailsTex, mainSailsTex, foreAndAftSailsTex, noSailsTex);
+    otherShip->width = 300;
+    otherShip->height = 120;
+    otherShip->position.x = -500;
+    otherShip->setTarget(Vec2(10, 10));
 
-    world.setCanonBallRenderer(&circleRenderer);
-    world.setShipRenderer(&texturedRectangleProgram);
+    otherShip->setState(AIShip::ATTACK);
 
-    world.addAIShip(otherShip);
-    world.setShip(ship);
-
+    world = GameWorld::getInstance();
+    world->addObject(otherShip);
+    world->addObject(playerShip);
+    world->init();
+    world->setScreenDimensions(this->width(), this->height());
+    world->setWind(1, M_PI);
 
     QObject::connect(&gameLoopTimer, SIGNAL(timeout()), this, SLOT(update()));
-    gameLoopTimer.setInterval(33);
+//    gameLoopTimer.setTimerType(Qt::PreciseTimer);
+    gameLoopTimer.setInterval(16);
     gameLoopTimer.start();
     GLuint err = GL_NO_ERROR;
     while ((err = glGetError()) != GL_NO_ERROR) {
         qDebug() << "Error: " << (void *) err;
     }
-
 }
 
 void OpenGLWidget::resizeGL(int w, int h) {
+    world->setScreenDimensions(this->width(), this->height());
 }
 
-bool yes = false;
 void OpenGLWidget::paintGL() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    world.update();
-    ship.angularFriction = 0.9;
-    ship.update();
-    texturedRectangleProgram.draw(ship, this->width(), this->height());
-    otherShip.update();
-    texturedRectangleProgram.draw(otherShip, this->width(), this->height());
-    for (int i = 0; i < ship.getNumberOfCanonBalls(); i++) {
-        BoundingBox *canonball = ship.getCanonBallAt(i);
-        if (canonball->isOutOfScreenBounds(width(), height())) {
-            ship.deleteCanon(i);
-            i--;
-            continue;
-        }
-        canonball->update();
-        circleRenderer.draw(*canonball, width(), height());
-    }
-
-    GLuint err = GL_NO_ERROR;
-    while ((err = glGetError()) != GL_NO_ERROR) {
-        qDebug() << "Error: " << (void *) err;
-    }
+    world->update();
+    world->renderWorld(this->width(), this->height());
 }
 
 void OpenGLWidget::keyPressEvent(QKeyEvent *event) {
-    switch(event->key()) {
-        case Qt::Key_A:
-            ship.angularAcceleration = 0.01;
-        break;
-        case Qt::Key_D:
-            ship.angularAcceleration = -0.01;
-        break;
-        case Qt::Key_S:
-            ship.toggleMainSails();
-        break;
-        case Qt::Key_W:
-            ship.toggleForeAndAftSails();
-        break;
-        case Qt::Key_Space:
-            ship.fireCanons();
-        break;
-    }
+    world->keyPressEvent(event);
 }
 
 void OpenGLWidget::keyReleaseEvent(QKeyEvent *event) {
-    switch(event->key()) {
-        case Qt::Key_A:
-        case Qt::Key_D:
-            ship.angularAcceleration = 0;
-        break;
-        case Qt::Key_W:
-        break;
-    }
+    world->keyReleaseEvent(event);
+}
+
+void OpenGLWidget::mousePressEvent(QMouseEvent *event) {
+    world->mousePressEvent(event);
 }

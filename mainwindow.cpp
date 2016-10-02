@@ -23,3 +23,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
 void MainWindow::keyReleaseEvent(QKeyEvent *event) {
     widget->keyReleaseEvent(event);
 }
+
+void MainWindow::mousePressEvent(QMouseEvent *event) {
+    widget->mousePressEvent(event);
+}

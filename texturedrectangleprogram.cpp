@@ -1,7 +1,9 @@
 #include "texturedrectangleprogram.h"
-#include "boundingbox.h"
+#include "gameobject.h"
 #include <QOpenGLShader>
 #include <QImage>
+#include <QOpenGLWidget>
+#include <QOpenGLTexture>
 
 TexturedRectangleProgram::TexturedRectangleProgram() {}
 
@@ -35,10 +37,10 @@ void TexturedRectangleProgram::init(const char *vertexShaderFile, const char *fr
 
     GLfloat bufferData[] = {
         //Position				//Texcoord
-       -1.0f,  -1.0f, 0.0f,		0.0, 0.0,
-        1.0f,  -1.0f, 0.0f,		1.0, 0.0,
-        1.0f,   1.0f, 0.0f, 	1.0, 1.0,
-       -1.0f,   1.0f, 0.0f,		0.0, 1.0
+       -0.5f,  -0.5f, 0.0f,		0.0, 0.0,
+        0.5f,  -0.5f, 0.0f,		1.0, 0.0,
+        0.5f,   0.5f, 0.0f, 	1.0, 1.0,
+       -0.5f,   0.5f, 0.0f,		0.0, 1.0
     };
 
     glBufferData(GL_ARRAY_BUFFER, 4 * 5 * sizeof(GL_FLOAT), bufferData, GL_STATIC_DRAW);
@@ -57,8 +59,26 @@ void TexturedRectangleProgram::init(const char *vertexShaderFile, const char *fr
     release();
 }
 
-void TexturedRectangleProgram::createTexture(const char* fileName, GLuint *texture) {
+std::unordered_map<const char*, GLuint> TexturedRectangleProgram::fileNameToTexturesMap;
 
+bool TexturedRectangleProgram::textureExists(const char* fileName) {
+    return !(0 == fileNameToTexturesMap[fileName]);
+}
+
+/**
+ * @brief TexturedRectangleProgram::getTexture
+ * Shouldn't have to worry about creating duplicate textures, they are cached
+ * in a hashmap with the fileName as a key.
+ * @param fileName
+ * @param texture if NULL will just load the texture into the cache
+ */
+void TexturedRectangleProgram::getTexture(const char* fileName, GLuint *texture) {
+    if (textureExists(fileName)) {
+        if (texture != NULL) {
+            *texture = fileNameToTexturesMap[fileName];
+        }
+        return;
+    }
     QImage image;
     if (!image.load(fileName)) {
         qWarning() << "Image " << fileName << " failed to load.";
@@ -66,7 +86,11 @@ void TexturedRectangleProgram::createTexture(const char* fileName, GLuint *textu
     const int width = image.width();
     const int height = image.height();
 
-    GLubyte pixels[width * height * 4];
+    if (GL_MAX_TEXTURE_SIZE <= width || GL_MAX_TEXTURE_SIZE <= height) {
+        qWarning() << "Image " << fileName << " dimensions too large for openGL texture";
+    }
+
+    GLubyte *pixels = new GLubyte[width * height * 4];
     memset(pixels, 0, width * height * 4 * sizeof(GLubyte));
 
     for (int y = 0; y < height; y++) {
@@ -84,8 +108,9 @@ void TexturedRectangleProgram::createTexture(const char* fileName, GLuint *textu
         }
     }
 
-    glGenTextures(1, texture);
-    glBindTexture(GL_TEXTURE_2D, *texture);
+    GLuint tempTexture;
+    glGenTextures(1, &tempTexture);
+    glBindTexture(GL_TEXTURE_2D, tempTexture);
 
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
@@ -94,9 +119,14 @@ void TexturedRectangleProgram::createTexture(const char* fileName, GLuint *textu
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
     glBindTexture(GL_TEXTURE_2D, 0);
+    fileNameToTexturesMap[fileName] = tempTexture;
+    if (texture != NULL) {
+        *texture = tempTexture;
+    }
+    delete[] pixels;
 }
 
-void TexturedRectangleProgram::draw(BoundingBox &rectangle, int screenWidth, int screenHeight) {
+void TexturedRectangleProgram::draw(GameObject &rectangle, int screenWidth, int screenHeight) {
     bind();
     glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
     glBindVertexArray(vertexArrayObject);

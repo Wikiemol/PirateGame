@@ -10,5 +10,5 @@ void main() {
     vec2 distVector = fragposition.xy;
     distVector -= (translation);
     float distsquared = dot(distVector, distVector);
-    color = distsquared > objectDimensions.x * objectDimensions.x / 4 ? vec4(0.0, 0.0, 0.0, 0.0) : vec4(1.0, 1.0, 1.0, 1.0);
+    color = distsquared > objectDimensions.x * objectDimensions.x / (16) ? vec4(0.0, 0.0, 0.0, 0.0) : vec4(1.0, 1.0, 1.0, 1.0);
 }

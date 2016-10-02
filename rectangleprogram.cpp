@@ -19,10 +19,10 @@ void RectangleProgram::init(const char* vertexShaderFile, const char* fragmentSh
 
     GLfloat bufferData[] = {
         //Position				//Texcoord
-       -1.0f,  -1.0f, 0.0f,		1.0, 1.0,
-        1.0f,  -1.0f, 0.0f,		0.0, 1.0,
-        1.0f,   1.0f, 0.0f, 	0.0, 0.0,
-       -1.0f,   1.0f, 0.0f,		1.0, 0.0
+       -0.5f,  -0.5f, 0.0f,		1.0, 1.0,
+        0.5f,  -0.5f, 0.0f,		0.0, 1.0,
+        0.5f,   0.5f, 0.0f, 	0.0, 0.0,
+       -0.5f,   0.5f, 0.0f,		1.0, 0.0
     };
 
     glBufferData(GL_ARRAY_BUFFER, 4 * 5 * sizeof(GL_FLOAT), bufferData, GL_STATIC_DRAW);
@@ -38,7 +38,7 @@ void RectangleProgram::init(const char* vertexShaderFile, const char* fragmentSh
     release();
 }
 
-void RectangleProgram::draw(BoundingBox &rectangle, int screenWidth, int screenHeight) {
+void RectangleProgram::draw(GameObject &rectangle, int screenWidth, int screenHeight) {
     bind();
     glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
     glBindVertexArray(vertexArrayObject);
@@ -46,19 +46,21 @@ void RectangleProgram::draw(BoundingBox &rectangle, int screenWidth, int screenH
     GLint objectDimensions = uniformLocation("objectDimensions");
     GLint translation = uniformLocation("translation");
     GLint rotation = uniformLocation("rotation");
+    GLint color = uniformLocation("color");
     if (screenDimensions == -1 || objectDimensions == -1
             || translation == -1 || rotation == -1 ) {
-        qWarning() << "Textured Rectangle Program uniform not found.";
+        qWarning() << "Rectangle Program uniform not found.";
     }
 
     glUniform2f(screenDimensions, screenWidth, screenHeight);
     glUniform2f(objectDimensions, rectangle.width, rectangle.height);
     glUniform2f(translation, rectangle.position.x, rectangle.position.y);
+    glUniform4f(color, this->color.red() / 255.0f, this->color.green() / 255.0f, this->color.blue() / 255.0f, this->color.alpha() / 255.0f);
 
     GLfloat rotationMatrix[4] = {};
     rotationMatrix[0] = std::cos(rectangle.angle);
-    rotationMatrix[1] = std::sin(rectangle.angle);
-    rotationMatrix[2] = -std::sin(rectangle.angle);
+    rotationMatrix[1] = -std::sin(rectangle.angle);
+    rotationMatrix[2] = std::sin(rectangle.angle);
     rotationMatrix[3] = std::cos(rectangle.angle);
     glUniformMatrix2fv(rotation, 1, GL_FALSE, rotationMatrix);
 
@@ -66,4 +68,14 @@ void RectangleProgram::draw(BoundingBox &rectangle, int screenWidth, int screenH
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     release();
+}
+
+QColor RectangleProgram::getColor() const
+{
+    return color;
+}
+
+void RectangleProgram::setColor(const QColor &value)
+{
+    color = value;
 }
