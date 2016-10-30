@@ -38,7 +38,7 @@ public:
 
     Vec2 getDirection() const;
 
-    virtual bool collidesWith(GameObject &object) const;
+    virtual bool collidesWith(const GameObject &object) const;
     virtual void onCollision(const GameObject *object);
     virtual void update(qint64 timeElapsed);
 
@@ -70,20 +70,28 @@ public:
     int getDamage() const;
     void setDamage(int value);
 
+    virtual void see(const GameObject *object);
+    float getSight() const;
+    void setSight(float sight);
+
+    long getId() const;
 
 protected:
     Type type;
 private:
     GameObject* parent = NULL;
-    unsigned _visibility = 100;
+    float _sight = 2000;
     bool _destroyOnCollision = false;
     bool _isControllable = false;
     bool _isDangerous = false;
+    long _id = 0;
     int damage = 10;
     float range = 0;
     Vec2 initialPosition;
     std::vector<Vec2> getAxes() const;
     std::vector<Vec2> getVertices() const;
+    static long _idCounter;
+    static long createId();
 };
 
 #endif // TEXTUREDRECTANGLE_H

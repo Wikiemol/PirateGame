@@ -55,6 +55,7 @@ private:
     GameButton spanishFlagButton;
     GameButton frenchFlagButton;
     GameButton englishFlagButton;
+    GameButton noFlagButton;
 
     unsigned screenHalfWidth = 0;
     unsigned screenHalfHeight = 0;

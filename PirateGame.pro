@@ -47,8 +47,11 @@ SOURCES += $$PWD/com/digitalnativ/game/src/*.cpp \
 FORMS  += $$PWD/com/digitalnativ/game/mainwindow.ui
 
 DISTFILES += $$PWD/com/digitalnativ/game/shaders/*.vert \
-    README.md
+    README.md \
+    com/digitalnativ/game/images/flags/no_flag.png
 DISTFILES += $$PWD/com/digitalnativ/game/shaders/*.frag
 
 RESOURCES += \
     $$PWD/com/digitalnativ/game/resources.qrc
+
+QMAKE_LFLAGS += -v

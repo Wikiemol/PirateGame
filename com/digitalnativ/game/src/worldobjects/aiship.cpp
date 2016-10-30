@@ -34,6 +34,23 @@ float AIShip::getTargetMovementRange() {
     return (maxX - minX) * (maxY - minY);
 }
 
+void AIShip::see(const GameObject *object) {
+    if (object->getType() == GameObject::AISHIP ||
+            object->getType() == GameObject::SHIP) {
+        float sight = getSight();
+        Vec2 directionToObject = Vec2::subtract(object->position, position);
+        if (Vec2::dot(directionToObject, directionToObject) < sight) {
+            if (object->getType() == GameObject::SHIP) {
+//                const Ship* ship = static_cast<const Ship*>(object);
+//                Ship::Flag flag = ship->getFlag();
+//                if (flag != this->getFlag()) {
+////                    seen[object->getId()]
+//                }
+            }
+        }
+    }
+}
+
 void AIShip::update(qint64 timeElapsed) {
     AIShip::State state = getState();
     qint64 currentTime = QDateTime::currentMSecsSinceEpoch();

@@ -17,5 +17,6 @@
         <file>images/flags/french_flag.png</file>
         <file>images/flags/roger_flag.png</file>
         <file>images/flags/spanish_flag.png</file>
+        <file>images/flags/no_flag.png</file>
     </qresource>
 </RCC>

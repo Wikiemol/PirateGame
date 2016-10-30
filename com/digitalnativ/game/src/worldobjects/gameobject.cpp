@@ -1,13 +1,16 @@
 #include "gameobject.h"
 
+long GameObject::_idCounter = 0;
 GameObject::GameObject() {
     type = GAMEOBJECT;
+    _id = GameObject::createId();
 }
 
 GameObject::~GameObject()
 {
 
 }
+
 
 void GameObject::setRadialAcceleration(float radialAcceleration) {
     Vec2 acc(radialAcceleration * std::cos(angle), radialAcceleration * std::sin(angle));
@@ -31,7 +34,6 @@ void GameObject::update(qint64 timeElapsed) {
     Vec2::multiply(&velocity, friction);
 
     Vec2::add(&position, Vec2::multiply(velocity, times));
-
 }
 
 GameObject::Type GameObject::getType() const
@@ -118,12 +120,31 @@ void GameObject::setDamage(int value)
     damage = value;
 }
 
+void GameObject::see(const GameObject *object) {
+    object;
+}
+
+float GameObject::getSight() const
+{
+    return _sight;
+}
+
+void GameObject::setSight(float sight)
+{
+    _sight = sight;
+}
+
+long GameObject::getId() const
+{
+    return _id;
+}
+
 void GameObject::setIsDangerous(bool isDangerous)
 {
     _isDangerous = isDangerous;
 }
 
-bool GameObject::collidesWith(GameObject &object) const
+bool GameObject::collidesWith(const GameObject &object) const
 {
     return GameObject::colliding(*this, object);
 }
@@ -160,6 +181,11 @@ std::vector<Vec2> GameObject::getVertices() const {
     vertices.push_back(topLeft);
     vertices.push_back(topRight);
     return vertices;
+}
+
+long GameObject::createId()
+{
+    return ++_idCounter;
 }
 
 void GameObject::operator=(const GameObject &box)
