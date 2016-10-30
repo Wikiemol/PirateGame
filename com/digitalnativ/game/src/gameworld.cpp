@@ -90,6 +90,11 @@ long GameWorld::getWorldWidth() const
     return worldWidth;
 }
 
+void GameWorld::sendMessage(Message message)
+{
+    _messageQueue.push_back(message);
+}
+
 void GameWorld::setWind(float magnitude, float angle)
 {
     this->windAngle = angle;

@@ -40,7 +40,7 @@ Anything in this class should be extremely data oriented. Things like data struc
 Memory Pool
 --------------
 
-The memory pool is worth noting. The GameWorld will only allocate memory through the memory pool, which will be initialized at the beginning. This will allow us to monitor and control the memory that we use, and allow us to optimize for caching. It will also give us a solid idea of *how much* memory we use. Furthermore, nothing should need to allocate memory on the heap except for the GameWorld. If we need to store a reference to something, it should be via a custom id (such as the game object's getId method). 
+The memory pool is worth noting. The GameWorld will only allocate memory through the memory pool, which will be initialized at the beginning. This will allow us to monitor and control the memory that we use, and allow us to optimize for caching. It will also give us a solid idea of *how much* memory we use. Furthermore, nothing should need to allocate memory on the heap except for the GameWorld. If we need to store a reference to something, it should be via a custom id (such as the game object's getId method) or if we really need to allocate something, we should request that the GameWorld allocate it.
 
 Action Handler
 --------------

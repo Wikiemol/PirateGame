@@ -9,6 +9,7 @@
 #include "rendering/rectangleprogram.h"
 #include "worldobjects/gamebutton.h"
 #include "worldobjects/camera.h"
+#include "message.h"
 #include <QKeyEvent>
 #include <vector>
 #include <unordered_set>
@@ -33,6 +34,7 @@ public:
     void handleCollisions();
     long getWorldHeight() const;
     long getWorldWidth() const;
+    void sendMessage(Message message);
 
     void addObject(GameObject *object);
     AIShip *getAIShipAt(unsigned i) const;
@@ -47,6 +49,7 @@ private:
     static GameWorld* instance;
     Camera camera;
     std::vector<GameObject *> objects;
+    std::vector<Message> _messageQueue;
     std::unordered_set<GameObject *> destroyedObjects;
     RectangleProgram rectangleRenderer;
     GameObject windArrow;
