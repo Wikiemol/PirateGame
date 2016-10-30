@@ -5,10 +5,11 @@
 #include "canonball.h"
 
 Ship::Ship() {
+    GameObject();
+    addType(GType::SHIP);
     friction = SHIP_FRICTION;
     angularFriction = SHIP_ANGULAR_FRICTION;
     maxAngularVelocity = MAX_ANGULAR_VELOCITY;
-    type = SHIP;
 }
 
 void Ship::setWind(float magnitude, float angle) {

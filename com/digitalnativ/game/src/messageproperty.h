@@ -1,14 +1,14 @@
 #ifndef MESSAGEPROPERTY_H
 #define MESSAGEPROPERTY_H
+#include "gametype.h"
 
 
 class MessageProperty
 {
 public:
-    enum PropertyType {
-    };
 
-    virtual PropertyType getType() = 0;
+    virtual bool isType(GType type) const = 0;
+    virtual void addType(GType type) = 0;
 };
 
 #endif // MESSAGEPROPERTY_H

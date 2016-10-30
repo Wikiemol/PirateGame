@@ -2,7 +2,8 @@
 #include "aiship.h"
 
 AIShip::AIShip() {
-    type = GameObject::AISHIP;
+//    Ship();
+    addType(GType::AISHIP);
 }
 
 float AIShip::getTargetMovementRange() {

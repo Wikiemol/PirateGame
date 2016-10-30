@@ -3,7 +3,7 @@
 
 CanonBall::CanonBall()
 {
-    type = GameObject::CANONBALL;
+    addType(GType::CANONBALL);
     setIsDangerous(true);
     setDamage(5);
 }
@@ -18,7 +18,7 @@ void CanonBall::update(qint64 timeElapsed) {
 
 void CanonBall::onCollision(const GameObject *object)
 {
-    if (object->getType() != GameObject::CANONBALL) {
+    if (!object->isType(GType::CANONBALL)) {
         GameWorld *world = GameWorld::getInstance();
         world->onDestroy(this);
     }

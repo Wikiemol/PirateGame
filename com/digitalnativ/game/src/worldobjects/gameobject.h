@@ -2,16 +2,16 @@
 #define TEXTUREDRECTANGLE_H
 #include "utils/vec2.h"
 #include "defaults.h"
+#include "messagereceiver.h"
+#include "messageproperty.h"
+#include "messageproperty.h"
+#include "messagereceiver.h"
+#include "gametype.h"
+#include <unordered_set>
 
-class GameObject
+class GameObject : public MessageReceiver, public MessageProperty
 {
 public:
-    enum Type {
-        GAMEOBJECT,
-        SHIP,
-        AISHIP,
-        CANONBALL
-    };
 
     int width = 100;
     int height = 100;
@@ -32,7 +32,7 @@ public:
     GameObject();
     virtual ~GameObject();
     void setRadialAcceleration(float radialAcceleration);
-    void operator=(const GameObject& box);
+//    void operator=(const GameObject& box);
     static bool colliding(const GameObject &a, const GameObject &b);
     static bool pointInBox(Vec2 &point, GameObject &box);
 
@@ -41,9 +41,9 @@ public:
     virtual bool collidesWith(GameObject &object) const;
     virtual void onCollision(const GameObject *object);
     virtual void update(qint64 timeElapsed);
-
-    Type getType() const;
-    void setType(const Type &value);
+    virtual bool isType(GType type) const;
+    virtual void addType(GType type);
+    virtual void receiveMessage(const Message *message);
 
     void setRange(float value);
 
@@ -72,7 +72,6 @@ public:
 
 
 protected:
-    Type type;
 private:
     GameObject* parent = NULL;
     unsigned _visibility = 100;
@@ -84,6 +83,7 @@ private:
     Vec2 initialPosition;
     std::vector<Vec2> getAxes() const;
     std::vector<Vec2> getVertices() const;
+    std::unordered_set<GType, GTypeHash> _types;
 };
 
 #endif // TEXTUREDRECTANGLE_H

@@ -29,8 +29,7 @@ HEADERS += $$PWD/com/digitalnativ/game/src/*.h \
     com/digitalnativ/game/src/worldobjects/gamebutton.h \
     com/digitalnativ/game/src/worldobjects/gameobject.h \
     com/digitalnativ/game/src/worldobjects/gameobjectproperty.h \
-    com/digitalnativ/game/src/worldobjects/ship.h \
-    com/digitalnativ/game/src/messageproperty.h
+    com/digitalnativ/game/src/worldobjects/ship.h
 
 SOURCES += $$PWD/com/digitalnativ/game/src/*.cpp \
     com/digitalnativ/game/src/rendering/rectangleprogram.cpp \

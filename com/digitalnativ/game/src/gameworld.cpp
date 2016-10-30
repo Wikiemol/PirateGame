@@ -23,7 +23,7 @@ void GameWorld::update() {
     }
     for (unsigned i = 0; i < objects.size(); i++) {
         GameObject* object = objects.at(i);
-        if (CONTROLLABLE_AI_TARGET && object->getType() == GameObject::AISHIP) {
+        if (CONTROLLABLE_AI_TARGET && object->isType(GType::AISHIP)) {
             AIShip* aiship = static_cast<AIShip*>(object);
             GameObject * controllable = getControllable();
             if (controllable != NULL) {
@@ -32,8 +32,8 @@ void GameWorld::update() {
         }
 
         object->update(timeElapsed);
-        if (CAMERA_FOLLOWING_PLAYER && object->getType() == GameObject::SHIP) {
-            camera.position = object->position;
+        if (CAMERA_FOLLOWING_PLAYER) {
+            camera.position = getControllable()->position;
         }
     }
     handleCollisions();
@@ -95,7 +95,7 @@ void GameWorld::setWind(float magnitude, float angle)
 {
     this->windAngle = angle;
     for (unsigned i = 0; i < objects.size(); i++) {
-        if (objects.at(i)->getType() == GameObject::AISHIP || objects.at(i)->getType() == GameObject::SHIP) {
+        if (objects.at(i)->isType(GType::AISHIP) || objects.at(i)->isType(GType::SHIP)) {
             static_cast<Ship*>(objects.at(i))->setWind(magnitude, angle);
         }
     }
@@ -125,28 +125,28 @@ void GameWorld::init() {
 
     jollyRogerButton.setAction([this]() {
         GameObject * controllable = getControllable();
-        if (controllable != NULL && controllable->getType() == GameObject::SHIP) {
+        if (controllable != NULL && controllable->isType(GType::SHIP)) {
             Ship *ship = static_cast<Ship*>(controllable);
             ship->setFlag(Ship::JOLLY_ROGER);
         }
     });
     frenchFlagButton.setAction([this]() {
         GameObject * controllable = getControllable();
-        if (controllable != NULL && controllable->getType() == GameObject::SHIP) {
+        if (controllable != NULL && controllable->isType(GType::SHIP)){
             Ship *ship = static_cast<Ship*>(controllable);
             ship->setFlag(Ship::FRENCH);
         }
     });
     spanishFlagButton.setAction([this](){
         GameObject * controllable = getControllable();
-        if (controllable != NULL && controllable->getType() == GameObject::SHIP) {
+        if (controllable != NULL && controllable->isType(GType::SHIP)) {
             Ship *ship = static_cast<Ship*>(controllable);
             ship->setFlag(Ship::SPANISH);
         }
     });
     englishFlagButton.setAction([this]() {
         GameObject * controllable = getControllable();
-        if (controllable != NULL && controllable->getType() == GameObject::SHIP) {
+        if (controllable != NULL && controllable->isType(GType::SHIP)) {
             Ship *ship = static_cast<Ship*>(controllable);
             ship->setFlag(Ship::ENGLISH);
         }
@@ -224,7 +224,7 @@ void GameWorld::mousePressEvent(QMouseEvent *event) {
  * @return NULL if corresponding object is not an AIShip
  */
 AIShip* GameWorld::getAIShipAt(unsigned i) const {
-    if (objects.at(i)->getType() == GameObject::AISHIP) {
+    if (objects.at(i)->isType(GType::AISHIP)) {
         return static_cast<AIShip*>(objects.at(i));
     } else {
         return NULL;
@@ -298,14 +298,14 @@ void GameWorld::renderWorld(int screenHalfWidth, int screenHalfHeight)
     frame++;
 
     for (unsigned i = 0; i < objects.size(); i++) {
-        if ((objects.at(i))->getType() == GameObject::AISHIP || objects.at(i)->getType() == GameObject::SHIP) {
+        if ((objects.at(i))->isType(GType::AISHIP) || objects.at(i)->isType(GType::SHIP)) {
             if (selected == (int) i) {
                 Renderer::setColor(255, 0, 0, 128);
                 Renderer::drawRect(*objects.at(i));
             }
             Ship* ship = static_cast<Ship*>(objects.at(i));
             Renderer::drawShip(*ship, false, true);
-        } else if ((objects.at(i)->getType() == GameObject::CANONBALL)) {
+        } else if ((objects.at(i)->isType(GType::CANONBALL))) {
             Renderer::drawCircle(*objects.at(i));
         }
     }

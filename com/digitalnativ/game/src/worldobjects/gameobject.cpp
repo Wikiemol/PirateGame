@@ -1,7 +1,7 @@
 #include "gameobject.h"
 
 GameObject::GameObject() {
-    type = GAMEOBJECT;
+    addType(GType::GAMEOBJECT);
 }
 
 GameObject::~GameObject()
@@ -34,14 +34,19 @@ void GameObject::update(qint64 timeElapsed) {
 
 }
 
-GameObject::Type GameObject::getType() const
+bool GameObject::isType(GType type) const
 {
-    return type;
+    return _types.find(type) != _types.end();
 }
 
-void GameObject::setType(const Type &value)
+void GameObject::addType(GType type)
 {
-    type = value;
+    _types.insert(type);
+}
+
+void GameObject::receiveMessage(const Message *message)
+{
+
 }
 
 void GameObject::setRange(float value)
@@ -162,27 +167,27 @@ std::vector<Vec2> GameObject::getVertices() const {
     return vertices;
 }
 
-void GameObject::operator=(const GameObject &box)
-{
-    this->width = box.width;
-    this->height = box.height;
+//void GameObject::operator=(const GameObject &box)
+//{
+//    this->width = box.width;
+//    this->height = box.height;
 
-    this->acceleration = box.acceleration;
-    this->velocity = box.velocity;
-    this->position = box.position;
-    this->friction = box.friction;
+//    this->acceleration = box.acceleration;
+//    this->velocity = box.velocity;
+//    this->position = box.position;
+//    this->friction = box.friction;
 
-    this->angularAcceleration = box.angularAcceleration;
-    this->angularVelocity = box.angularVelocity;
-    this->angle = box.angle;
+//    this->angularAcceleration = box.angularAcceleration;
+//    this->angularVelocity = box.angularVelocity;
+//    this->angle = box.angle;
 
-    this->angularFriction = box.angularFriction;
+//    this->angularFriction = box.angularFriction;
 
-    this->texture = box.texture;
-    this->type = box.getType();
-    this->initialPosition = box.getInitialPosition();
-    this->range = box.getRange();
-}
+//    this->texture = box.texture;
+//    this->type = box.getType();
+//    this->initialPosition = box.getInitialPosition();
+//    this->range = box.getRange();
+//}
 
 bool GameObject::colliding(const GameObject &a, const GameObject &b) {
     std::vector<Vec2> bAxes = b.getAxes();
