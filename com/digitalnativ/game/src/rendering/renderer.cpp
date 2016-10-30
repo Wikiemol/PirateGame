@@ -60,20 +60,11 @@ void Renderer::drawRect(GameObject box)
     rectRenderer.draw(box, screenHalfWidth, screenHalfHeight);
 }
 
-void Renderer::drawCircle(Vec2 position, float radius) {
-    GameObject circle;
-    circle.position = position;
-    circle.width = radius * 2;
-    circle.height = radius * 2;
-    drawCircle(circle);
-}
-
 void Renderer::drawCircle(GameObject circle) {
-        Vec2::subtract(&circle.position, camera.position);
         circle.width *= camera.zoom;
         circle.height *= camera.zoom;
         Vec2::multiply(&circle.position, camera.zoom);
-        circleRenderer.setColor(color);
+        Vec2::subtract(&circle.position, camera.position);
         circleRenderer.draw(circle, screenHalfWidth, screenHalfHeight);
 }
 
@@ -84,13 +75,24 @@ void Renderer::drawShip(Ship ship)
     ship.height *= camera.zoom;
     Vec2::multiply(&ship.position, camera.zoom);
     texturedRectangleRenderer.draw(ship, screenHalfWidth, screenHalfHeight);
+//    for (int i = 0; i < ship.getNumberOfCanonBalls(); i++) {
+//        GameObject canonBall = *ship.getCanonBallAt(i);
+//        canonBall.width *= camera.zoom;
+//        canonBall.height *= camera.zoom;
+//        Vec2::multiply(&canonBall.position, camera.zoom);
+
+//        Vec2::subtract(&canonBall.position, camera.position);
+//        circleRenderer.draw(canonBall, screenHalfWidth, screenHalfHeight);
+//    }
+
 }
 
-void Renderer::drawShip(Ship ship, bool drawHealth)
+void Renderer::drawShip(Ship ship, bool drawFlag, bool drawHealth)
 {
     drawShip(ship);
-    Ship::Flag flag = ship.getFlag();
-    if (flag != Ship::NONE) {
+    if (drawFlag) {
+        Ship::Flag flag = ship.getFlag();
+
         GameObject flagIcon;
         if (flag == Ship::JOLLY_ROGER) {
             TexturedRectangleProgram::getTexture(":/images/flags/roger_flag.png", &flagIcon.texture);
@@ -115,8 +117,4 @@ void Renderer::drawShip(Ship ship, bool drawHealth)
         health.position.y += ship.height * 1.1;
         Renderer::drawRect(health);
     }
-}
-
-void Renderer::getTexture(const char* fileName, GLuint* texture) {
-    TexturedRectangleProgram::getTexture(fileName, texture);
 }

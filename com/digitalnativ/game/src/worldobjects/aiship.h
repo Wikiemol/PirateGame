@@ -2,7 +2,6 @@
 #define AISHIP_H
 #include "ship.h"
 #include <deque>
-#include <unordered_map>
 
 
 class AIShip : public Ship
@@ -19,13 +18,8 @@ public:
     void operator =(const AIShip &s);
 
     void update(qint64 timeElapsed);
-    void see(const GameObject *object);
 private:
-    typedef long ObjId;
-    typedef qint64 LastSeen;
     std::deque<Vec2> lastTargetPositions;
-    std::unordered_map<ObjId, LastSeen> seen;
-
     qint64 lastTargetSnapShotTaken = -1;
     GameObject target;
     State state = WANDER;

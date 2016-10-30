@@ -10,7 +10,7 @@
 class Ship : public GameObject, public Controllable
 {
 public:
-    enum Flag {JOLLY_ROGER, SPANISH, FRENCH, ENGLISH, NONE};
+    enum Flag {JOLLY_ROGER, SPANISH, FRENCH, ENGLISH};
     Ship();
     void setWind(float magnitude, float angle);
     void setWind(Vec2 value);
@@ -58,7 +58,7 @@ private:
     int numberOfCanons = 5;
     std::vector<GameObject> canonBalls;
     qint64 lastCanonFire = -1;
-    Flag flag = NONE;
+    Flag flag = JOLLY_ROGER;
     int maxhealth = MAX_HEALTH;
     int health = maxhealth;
 };

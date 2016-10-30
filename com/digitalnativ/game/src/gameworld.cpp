@@ -47,11 +47,7 @@ void GameWorld::handleCollisions() {
             if (obj2Index == obj1Index) {
                 continue;
             }
-
             GameObject* object2 = objects.at(obj2Index);
-
-            object1->see(object2);
-
             if (object1->getParent() != object2 && object2->getParent() != object1 &&
                     object1->collidesWith(*object2)) {
 
@@ -126,7 +122,6 @@ void GameWorld::init() {
     TexturedRectangleProgram::getTexture(":/images/flags/spanish_flag.png", &spanishFlagButton.texture);
     TexturedRectangleProgram::getTexture(":/images/flags/french_flag.png", &frenchFlagButton.texture);
     TexturedRectangleProgram::getTexture(":/images/flags/english_flag.png", &englishFlagButton.texture);
-    TexturedRectangleProgram::getTexture(":/images/flags/no_flag.png", &noFlagButton.texture);
 
     jollyRogerButton.setAction([this]() {
         GameObject * controllable = getControllable();
@@ -154,13 +149,6 @@ void GameWorld::init() {
         if (controllable != NULL && controllable->getType() == GameObject::SHIP) {
             Ship *ship = static_cast<Ship*>(controllable);
             ship->setFlag(Ship::ENGLISH);
-        }
-    });
-    noFlagButton.setAction([this]() {
-        GameObject* controllable = getControllable();
-        if (controllable != NULL && controllable->getType() == GameObject::SHIP) {
-            Ship *ship = static_cast<Ship*>(controllable);
-            ship->setFlag(Ship::NONE);
         }
     });
 
@@ -202,43 +190,30 @@ void GameWorld::mousePressEvent(QMouseEvent *event) {
 
     if (GameObject::pointInBox(mouse, frenchFlagButton)) {
         frenchFlagButton.actionPerformed();
-        return;
     }
     if (GameObject::pointInBox(mouse, jollyRogerButton)) {
         jollyRogerButton.actionPerformed();
-        return;
     }
     if (GameObject::pointInBox(mouse, spanishFlagButton)) {
         spanishFlagButton.actionPerformed();
-        return;
     }
     if (GameObject::pointInBox(mouse, englishFlagButton)) {
         englishFlagButton.actionPerformed();
-        return;
-    }
-
-    if (GameObject::pointInBox(mouse, noFlagButton)) {
-        noFlagButton.actionPerformed();
-        return;
     }
 
     Vec2::add(&mouse, camera.position);
 
     for (int i = 0; i < (int) objects.size(); i++) {
-        if (GameObject::pointInBox(mouse, *objects.at(i))) {
-            if (selected == i) {
-                selected = -1;
-            } else {
-                selected = i;
-            }
-            continue;
-        }
-
         AIShip *aiship = getAIShipAt(i);
         if (aiship != NULL) {
             aiship->setTarget(mouse);
         }
 
+        if (GameObject::pointInBox(mouse, *objects.at(i))) {
+            selected = i;
+        } else if (selected == i) {
+            selected = -1;
+        }
     }
 
 }
@@ -323,21 +298,14 @@ void GameWorld::renderWorld(int screenHalfWidth, int screenHalfHeight)
     frame++;
 
     for (unsigned i = 0; i < objects.size(); i++) {
-        GameObject *object = objects.at(i);
-        GameObject::Type type = object->getType();
-        if (type == GameObject::AISHIP) {
-            Renderer::setColor(128, 128, 128, 128);
-            Renderer::drawCircle(object->position, object->getSight());
-        }
-        if (type == GameObject::AISHIP || objects.at(i)->getType() == GameObject::SHIP) {
+        if ((objects.at(i))->getType() == GameObject::AISHIP || objects.at(i)->getType() == GameObject::SHIP) {
             if (selected == (int) i) {
                 Renderer::setColor(255, 0, 0, 128);
                 Renderer::drawRect(*objects.at(i));
             }
             Ship* ship = static_cast<Ship*>(objects.at(i));
-            Renderer::drawShip(*ship, true);
+            Renderer::drawShip(*ship, false, true);
         } else if ((objects.at(i)->getType() == GameObject::CANONBALL)) {
-            Renderer::setColor(60, 60, 60, 255);
             Renderer::drawCircle(*objects.at(i));
         }
     }
@@ -350,7 +318,6 @@ void GameWorld::renderWorld(int screenHalfWidth, int screenHalfHeight)
             target.height = 20;
             target.position = aiShip->getTarget().position;
 
-            Renderer::setColor(128, 128, 255, 128);
             Renderer::drawRect(target);
         }
     }
@@ -376,9 +343,4 @@ void GameWorld::renderWorld(int screenHalfWidth, int screenHalfHeight)
     englishFlagButton.position.x = - screenHalfWidth + englishFlagButton.width / 2.0 + jollyRogerButton.width * 3;
     englishFlagButton.position.y = screenHalfHeight - englishFlagButton.height / 2.0;
     Renderer::drawMenuIcon(englishFlagButton);
-
-    noFlagButton.position.x = - screenHalfWidth + noFlagButton.width / 2.0 + jollyRogerButton.width * 4;
-    noFlagButton.position.y = screenHalfHeight - noFlagButton.height / 2.0;
-    Renderer::drawMenuIcon(noFlagButton);
-
 }

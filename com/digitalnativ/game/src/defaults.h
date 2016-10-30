@@ -8,7 +8,7 @@
 #define MAX_HEALTH 300
 #define CANON_RELOAD_TIME 4000 //in milliseconds
 #define CANON_RANGE 700
-#define CANON_VELOCITY 30
+#define CANON_VELOCITY 20
 #define AI_MAX_NOFIRE_TIME 6000 //in milliseconds
 #define CAMERA_FOLLOWING_PLAYER true
 #define WORLD_WIDTH 288000 / 10

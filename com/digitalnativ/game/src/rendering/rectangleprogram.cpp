@@ -48,7 +48,7 @@ void RectangleProgram::draw(GameObject &rectangle, int screenWidth, int screenHe
     GLint rotation = uniformLocation("rotation");
     GLint color = uniformLocation("color");
     if (screenDimensions == -1 || objectDimensions == -1
-            || translation == -1 || rotation == -1 || color == -1) {
+            || translation == -1 || rotation == -1 ) {
         qWarning() << "Rectangle Program uniform not found.";
     }
 

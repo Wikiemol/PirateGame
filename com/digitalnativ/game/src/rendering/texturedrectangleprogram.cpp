@@ -69,7 +69,7 @@ bool TexturedRectangleProgram::textureExists(const char* fileName) {
  * Shouldn't have to worry about creating duplicate textures, they are cached
  * in a hashmap with the fileName as a key.
  * @param fileName
- * @param texture if NULL will, just load the texture into the cache if it doesn't already exist
+ * @param texture if NULL will just load the texture into the cache
  */
 void TexturedRectangleProgram::getTexture(const char* fileName, GLuint *texture) {
     if (textureExists(fileName)) {
